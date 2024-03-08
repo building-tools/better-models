@@ -1,0 +1,4 @@
+name: BetterModels
+version: '${version}'
+main: de.raphaelgoetz.bettermodels.BetterModels
+api-version: '1.20'
