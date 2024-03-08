@@ -1,13 +1,15 @@
 package de.raphaelgoetz.bettermodels
 
-import org.bukkit.plugin.java.JavaPlugin
+import de.raphaelgoetz.bettermodels.manager.ModelManager
+import de.raphaelgoetz.bettermodels.manager.PlayerManager
+import net.axay.kspigot.main.KSpigot
 
-class BetterModels : JavaPlugin() {
-    override fun onEnable() {
-        // Plugin startup logic
-    }
+class BetterModels : KSpigot() {
 
-    override fun onDisable() {
-        // Plugin shutdown logic
+    val playerManager: PlayerManager = PlayerManager()
+    val modelManager: ModelManager = ModelManager()
+
+    override fun startup() {
+
     }
 }
