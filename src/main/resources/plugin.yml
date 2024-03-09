@@ -2,3 +2,13 @@ name: BetterModels
 version: '${version}'
 main: de.raphaelgoetz.bettermodels.BetterModels
 api-version: '1.20'
+
+commands:
+  getModel:
+    description: Opens the inventory to overview all available models
+  removeModel:
+    description: Removes the nearest models a half block away from your current location.
+  editModel:
+    description: Puts you in the edit-model mode.
+  model:
+    description: By using this command you can remove or add a model. Or just get it into your inventory.
