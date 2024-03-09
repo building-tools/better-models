@@ -30,7 +30,13 @@ class PlayerManager {
 
     fun addModelToInv(player: Player, itemStack: ItemStack) {
         if (player.inventory.contents.size >= 53) return
-        playerInventories[player.uniqueId]?.add(itemStack)
+
+        if (activeEditors.contains(player.uniqueId)) {
+            playerInventories[player.uniqueId]?.add(itemStack)
+            return
+        }
+
+        player.inventory.addItem(itemStack)
     }
 
     private fun restoreInventory(player: Player) {
