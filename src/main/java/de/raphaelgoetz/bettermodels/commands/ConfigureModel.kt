@@ -79,4 +79,6 @@ class ConfigureModel(private val betterModels: BetterModels) : CommandExecutor {
         val model = betterModels.modelManager.getModel(name)
         player.inventory.addItem(model)
     }
+
+    //TODO: ADD TABCOMPLETE TO LIST ALL MODELS
 }
