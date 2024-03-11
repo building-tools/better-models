@@ -1,12 +1,25 @@
 package de.raphaelgoetz.bettermodels.manager
 
+import com.google.gson.JsonParser
+import net.axay.kspigot.chat.KColors
+import net.axay.kspigot.chat.literalText
+import net.axay.kspigot.items.itemStack
+import net.axay.kspigot.items.meta
+import net.axay.kspigot.items.name
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import java.io.File
+import java.io.FileReader
 
 class ModelManager {
 
     private var data: MutableMap<String, Int> = hashMapOf()
     var models: MutableList<ItemStack> = mutableListOf()
+
+    init {
+        reload()
+    }
 
     private fun reload() {
         models.clear()
@@ -26,9 +39,18 @@ class ModelManager {
     }
 
     fun getModel(name: String): ItemStack {
+        val customModelData = data[name] ?: return ItemStack(Material.AIR)
 
-        //TODO: GET MODEL FORM NAME
-        return ItemStack(Material.MAGMA_CREAM)
+        return itemStack(Material.PAPER) {
+            meta {
+                setCustomModelData(customModelData)
+                displayName(literalText(name) {
+                    color = KColors.RED
+                    italic = false
+                    bold = true
+                })
+            }
+        }
     }
 
     fun idAlreadyInUse(int: Int): Boolean {
@@ -40,6 +62,33 @@ class ModelManager {
     }
 
     private fun readConfig() {
-        //TODO: JSON WITH A NAME AS KEY AND A ID AS VALUE --> BUILD ITEM WITH NAME AS DISPLAY AND CUSTOMMODELDATA AS ID
+        val folderPath = Bukkit.getPluginsFolder().path + "/BetterModels"
+        val folder = File(folderPath)
+        if (!folder.exists()) folder.mkdirs()
+
+        val filePath = ("$folderPath/model.json")
+        val jsonFile = File(filePath)
+
+        if (!jsonFile.exists()) {
+            //TODO: AUTOGENERATE JSON
+            return
+        }
+
+        val json = JsonParser.parseReader(FileReader(jsonFile)).asJsonObject
+
+        json.entrySet().forEach {
+            println(it.key)
+            data.putIfAbsent(it.key, it.value.asInt)
+            val item = itemStack(Material.PAPER) {
+                meta {
+                    setCustomModelData(it.value.asInt)
+                    name = literalText(it.key) {
+                        color = KColors.LIMEGREEN
+                    }
+                }
+            }
+
+            models.add(item)
+        }
     }
 }
