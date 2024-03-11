@@ -1,5 +1,6 @@
 package de.raphaelgoetz.bettermodels.manager
 
+import net.axay.kspigot.chat.KColors
 import net.axay.kspigot.chat.literalText
 import net.axay.kspigot.items.itemStack
 import net.axay.kspigot.items.meta
@@ -58,26 +59,38 @@ class PlayerManager {
         activeEditors.add(player.uniqueId)
         val inventory = player.inventory.contents.toList().filterNotNull()
         playerInventories[player.uniqueId] = inventory.toMutableList()
+        player.inventory.clear()
 
         val rotateItem = itemStack(Material.EMERALD) {
             meta {
-                name = literalText("Rotate nearest Model") {  }
+                name = literalText("Rotate nearest Model") {
+                    color = KColors.LIMEGREEN
+                    italic = false
+                    bold = true
+                }
             }
         }
 
         val removeItem = itemStack(Material.MAGMA_CREAM) {
             meta {
-                name = literalText("Rotate nearest Model") {  }
+                name = literalText("Remove nearest Model") {
+                    color = KColors.RED
+                    italic = false
+                    bold = true
+                }
             }
         }
 
         val getItem = itemStack(Material.ECHO_SHARD) {
             meta {
-                name = literalText("Rotate nearest Model") {  }
+                name = literalText("Collect nearest Model") {
+                    color = KColors.AQUAMARINE
+                    italic = false
+                    bold = true
+                }
             }
         }
 
-        player.closeInventory()
         player.inventory.addItem(rotateItem)
         player.inventory.addItem(removeItem)
         player.inventory.addItem(getItem)
