@@ -12,6 +12,7 @@ import net.axay.kspigot.main.KSpigot
 import org.bukkit.Bukkit
 
 class BetterModels : KSpigot() {
+
     val playerManager: PlayerManager = PlayerManager()
     val modelManager: ModelManager = ModelManager()
 
