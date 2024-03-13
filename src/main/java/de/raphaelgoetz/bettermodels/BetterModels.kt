@@ -6,6 +6,7 @@ import de.raphaelgoetz.bettermodels.commands.GetModel
 import de.raphaelgoetz.bettermodels.commands.RemoveModel
 import de.raphaelgoetz.bettermodels.listeners.PlayerInteractModelListener
 import de.raphaelgoetz.bettermodels.listeners.PlayerJoinEditListener
+import de.raphaelgoetz.bettermodels.listeners.PlayerPlaceCustomModelListener
 import de.raphaelgoetz.bettermodels.manager.ModelManager
 import de.raphaelgoetz.bettermodels.manager.PlayerManager
 import net.axay.kspigot.main.KSpigot
@@ -20,10 +21,14 @@ class BetterModels : KSpigot() {
 
         Bukkit.getPluginManager().registerEvents(PlayerInteractModelListener(this), this)
         Bukkit.getPluginManager().registerEvents(PlayerJoinEditListener(this), this)
+        Bukkit.getPluginManager().registerEvents(PlayerPlaceCustomModelListener(), this)
 
         getCommand("getModel")?.setExecutor(GetModel(this))
         getCommand("editModel")?.setExecutor(EditModel(this))
         getCommand("removeModel")?.setExecutor(RemoveModel())
-        getCommand("model")?.setExecutor(ConfigureModel(this))
+
+        val modelCommand = getCommand("model") ?: return
+        modelCommand.setExecutor(ConfigureModel(this))
+        modelCommand.tabCompleter = ConfigureModel(this)
     }
 }

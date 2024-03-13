@@ -4,9 +4,22 @@ import de.raphaelgoetz.bettermodels.BetterModels
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.command.TabExecutor
 import org.bukkit.entity.Player
 
-class ConfigureModel(private val betterModels: BetterModels) : CommandExecutor {
+class ConfigureModel(private val betterModels: BetterModels) : CommandExecutor, TabExecutor {
+    override fun onTabComplete(
+        p0: CommandSender,
+        p1: Command,
+        p2: String,
+        arguments: Array<out String>
+    ): MutableList<String> {
+        if (arguments.size == 1) return mutableListOf("add", "remove", "get")
+        if (arguments.size == 2) {
+            if (arguments[0] == "remove" || arguments[0] == "get") return betterModels.modelManager.data.keys.toMutableList()
+        }
+        return mutableListOf("dojo")
+    }
 
     override fun onCommand(player: CommandSender, p1: Command, p2: String, p3: Array<out String>?): Boolean {
         if (player !is Player) return true
@@ -80,5 +93,4 @@ class ConfigureModel(private val betterModels: BetterModels) : CommandExecutor {
         player.inventory.addItem(model)
     }
 
-    //TODO: ADD TABCOMPLETE TO LIST ALL MODELS
 }
