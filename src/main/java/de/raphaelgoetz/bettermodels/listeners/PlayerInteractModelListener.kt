@@ -15,10 +15,9 @@ class PlayerInteractModelListener(private val betterModels: BetterModels) : List
     @EventHandler
     fun onPlayerInteractEvent(playerInteractEvent: PlayerInteractEvent) {
         val player = playerInteractEvent.player
-        if (betterModels.playerManager.isEditor(player)) return
+        if (!betterModels.playerManager.isEditor(player)) return
         if (!playerInteractEvent.action.isRightClick) return
         val item = playerInteractEvent.item ?: return
-
         if (item.type == Material.EMERALD) {
             playerInteractEvent.isCancelled = true
             rotateItemInteraction(player)
@@ -50,9 +49,9 @@ class PlayerInteractModelListener(private val betterModels: BetterModels) : List
             entity.teleport(
                 Location(
                     entity.world,
-                    location.blockX.toDouble() + 0.5,
-                    location.blockY.toDouble() + 0.5,
-                    location.blockZ.toDouble() + 0.5,
+                    location.x,
+                    location.y,
+                    location.z,
                     yaw,
                     0.0f
                 )

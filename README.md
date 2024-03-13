@@ -25,7 +25,7 @@ Removes the nearest models a half block away from your current location.
 By using this command you can remove or add a model. Or just get it into your inventory.
 
 # Listeners
-SHIFT + RIGHT CLICK ON AIR will automatically put you into the edit-model mode.
+SHIFT + LEFT CLICK ON AIR will automatically put you into the edit-model mode.
 
 In edit-mode 
  - Emerald --> to rotate
