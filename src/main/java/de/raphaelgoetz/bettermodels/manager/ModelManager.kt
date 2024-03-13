@@ -14,7 +14,7 @@ import java.io.FileReader
 
 class ModelManager {
 
-    private var data: MutableMap<String, Int> = hashMapOf()
+    var data: MutableMap<String, Int> = hashMapOf()
     var models: MutableList<ItemStack> = mutableListOf()
 
     init {
@@ -29,12 +29,32 @@ class ModelManager {
     }
 
     fun addModel(name: String, id: Int) {
-        //TODO: ADD MODEL INTO JSON
+        val json = JsonParser.parseReader(FileReader(getConfig())).asJsonObject
+        json.addProperty(name, id)
+        getConfig().writeText(json.toString())
+
+        Bukkit.broadcast(
+            literalText("Added new model: $name with customModelData: $id") {
+                color = KColors.LIMEGREEN
+                italic = false
+            }
+        )
+
         reload()
     }
 
     fun removeModel(name: String) {
-        //TODO: REMOVE MODEL FROM JSON
+        val json = JsonParser.parseReader(FileReader(getConfig())).asJsonObject
+        json.remove(name)
+
+        Bukkit.broadcast(
+            literalText("Removed the model: $name") {
+                color = KColors.LIMEGREEN
+                italic = false
+            }
+        )
+
+        getConfig().writeText(json.toString())
         reload()
     }
 
@@ -61,7 +81,7 @@ class ModelManager {
         return data.containsKey(name)
     }
 
-    private fun readConfig() {
+    private fun getConfig(): File {
         val folderPath = Bukkit.getPluginsFolder().path + "/BetterModels"
         val folder = File(folderPath)
         if (!folder.exists()) folder.mkdirs()
@@ -70,11 +90,17 @@ class ModelManager {
         val jsonFile = File(filePath)
 
         if (!jsonFile.exists()) {
-            //TODO: AUTOGENERATE JSON
-            return
+            val json = JsonParser.parseReader(FileReader(getConfig())).asJsonObject
+            json.addProperty("{}", "")
+            jsonFile.writeText(json.toString())
+            return jsonFile
         }
 
-        val json = JsonParser.parseReader(FileReader(jsonFile)).asJsonObject
+        return jsonFile
+    }
+
+    private fun readConfig() {
+        val json = JsonParser.parseReader(FileReader(getConfig())).asJsonObject
 
         json.entrySet().forEach {
             println(it.key)
